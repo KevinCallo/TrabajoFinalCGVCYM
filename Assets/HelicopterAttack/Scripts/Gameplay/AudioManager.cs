@@ -197,9 +197,18 @@ namespace HelicopterAttack
             }
         }
 
-        #region Procedural Audio Generators (Fallbacks if no custom WAV/MP3 assigned)
+        #region Audio Clip Auto-Assignment & Generators
         private void GenerateFallbackClipsIfNeeded()
         {
+#if UNITY_EDITOR
+            if (m_MusicClip == null) m_MusicClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/MusicaAmbiente.mp3");
+            if (m_HelicopterEngineClip == null) m_HelicopterEngineClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/HeliceHelicopterp.mp3");
+            if (m_MachineGunClip == null) m_MachineGunClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/Ametralladora.mp3");
+            if (m_MissileLaunchClip == null) m_MissileLaunchClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/Misil.mp3");
+            if (m_HeliHitClip == null) m_HeliHitClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/ImpactoHelicoptero.mp3");
+            if (m_TankExplosionClip == null) m_TankExplosionClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/HelicopterAttack/Audio/ExplosionTanke.mp3");
+#endif
+
             if (m_MusicClip == null) m_MusicClip = CreateAmbientMusicClip();
             if (m_HelicopterEngineClip == null) m_HelicopterEngineClip = CreateHeliEngineClip();
             if (m_MachineGunClip == null) m_MachineGunClip = CreateMachineGunClip();
@@ -207,10 +216,10 @@ namespace HelicopterAttack
             if (m_HeliHitClip == null) m_HeliHitClip = CreateHeliHitClip();
             if (m_TankExplosionClip == null) m_TankExplosionClip = CreateTankExplosionClip();
 
-            m_MusicSource.clip = m_MusicClip;
-            m_HeliEngineSource.clip = m_HelicopterEngineClip;
-            m_MachineGunSource.clip = m_MachineGunClip;
-            m_MissileSource.clip = m_MissileLaunchClip;
+            if (m_MusicSource != null) m_MusicSource.clip = m_MusicClip;
+            if (m_HeliEngineSource != null) m_HeliEngineSource.clip = m_HelicopterEngineClip;
+            if (m_MachineGunSource != null) m_MachineGunSource.clip = m_MachineGunClip;
+            if (m_MissileSource != null) m_MissileSource.clip = m_MissileLaunchClip;
         }
 
         private AudioClip CreateAmbientMusicClip()
