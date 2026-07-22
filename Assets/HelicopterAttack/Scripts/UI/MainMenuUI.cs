@@ -7,6 +7,7 @@ namespace HelicopterAttack
 {
     public class MainMenuUI : MonoBehaviour
     {
+        public static int SelectedCampaignMode = 0; // 0 = Oleadas (5 min / 5 waves), 1 = Supervivencia (1 min / infinite tanks)
         public enum MenuState { Main, CampaignSelect, Volume }
 
         [Header("Menu State")]
@@ -188,18 +189,21 @@ namespace HelicopterAttack
                 case MenuState.CampaignSelect:
                     GUI.Label(new Rect(xPos, yPos + 65, panelWidth, 30), "SELECCIÓN DE CAMPAÑA", m_SubTitleStyle);
 
-                    if (GUI.Button(new Rect(xPos + 40, yPos + 110, panelWidth - 80, 40), "🚁 CAMPAÑA 1: OPERACIÓN DESIERTO"))
+                    if (GUI.Button(new Rect(xPos + 40, yPos + 110, panelWidth - 80, 40), "🚁 CAMPAÑA 1: OLEADAS"))
                     {
+                        SelectedCampaignMode = 0;
                         SelectCampaign(0);
                     }
 
-                    if (GUI.Button(new Rect(xPos + 40, yPos + 160, panelWidth - 80, 40), "🌆 CAMPAÑA 2: ATAQUE URBANO"))
+                    if (GUI.Button(new Rect(xPos + 40, yPos + 160, panelWidth - 80, 40), "🔥 CAMPAÑA 2: SUPERVIVENCIA (1 MIN)"))
                     {
+                        SelectedCampaignMode = 1;
                         SelectCampaign(0);
                     }
 
                     if (GUI.Button(new Rect(xPos + 40, yPos + 210, panelWidth - 80, 40), "🏰 CAMPAÑA 3: FORTALEZA ENEMIGA"))
                     {
+                        SelectedCampaignMode = 0;
                         SelectCampaign(0);
                     }
 

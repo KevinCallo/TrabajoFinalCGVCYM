@@ -37,13 +37,32 @@ namespace HelicopterAttack
 
         void Start()
         {
+            // Configure match parameters based on selected campaign mode
+            if (MainMenuUI.SelectedCampaignMode == 1)
+            {
+                m_MatchDurationSeconds = 60.0f; // 1 Minute Survival Mode
+            }
+            else
+            {
+                m_MatchDurationSeconds = 300.0f; // 5 Minutes Wave Campaign
+            }
+
             m_TimeRemaining = m_MatchDurationSeconds;
             m_IsMatchActive = true;
             m_TotalKills = 0;
 
             InitGUIStyles();
             OrganizeSceneTanksIntoWaves();
-            TriggerWave(1);
+
+            if (MainMenuUI.SelectedCampaignMode == 1)
+            {
+                m_WaveBannerText = "🔥 ¡MODO SUPERVIVENCIA INICIADO!\nSOBREVIVE 1 MINUTO Y ELIMINA TODOS LOS TANQUES POSIBLES";
+                m_WaveBannerTimer = 4.0f;
+            }
+            else
+            {
+                TriggerWave(1);
+            }
         }
 
         private void OrganizeSceneTanksIntoWaves()
@@ -71,21 +90,36 @@ namespace HelicopterAttack
 
             if (sceneTanks.Length == 0) return;
 
-            // Distribute pre-placed scene tanks evenly across the 5 campaign waves
-            for (int i = 0; i < sceneTanks.Length; i++)
+            if (MainMenuUI.SelectedCampaignMode == 1)
             {
-                int assignedWave = i % m_TotalWaves;
-                m_WaveTankGroups[assignedWave].Add(sceneTanks[i]);
-            }
-
-            // Deactivate all tanks for future waves (Waves 2..5)
-            for (int waveIdx = 1; waveIdx < m_TotalWaves; waveIdx++)
-            {
-                foreach (EnemyTank tank in m_WaveTankGroups[waveIdx])
+                // In Survival Mode, activate all pre-placed tanks immediately
+                foreach (EnemyTank tank in sceneTanks)
                 {
                     if (tank != null)
                     {
-                        tank.gameObject.SetActive(false);
+                        tank.gameObject.SetActive(true);
+                        tank.m_DetectionRange = 350.0f;
+                    }
+                }
+            }
+            else
+            {
+                // Distribute pre-placed scene tanks evenly across the 5 campaign waves
+                for (int i = 0; i < sceneTanks.Length; i++)
+                {
+                    int assignedWave = i % m_TotalWaves;
+                    m_WaveTankGroups[assignedWave].Add(sceneTanks[i]);
+                }
+
+                // Deactivate all tanks for future waves (Waves 2..5)
+                for (int waveIdx = 1; waveIdx < m_TotalWaves; waveIdx++)
+                {
+                    foreach (EnemyTank tank in m_WaveTankGroups[waveIdx])
+                    {
+                        if (tank != null)
+                        {
+                            tank.gameObject.SetActive(false);
+                        }
                     }
                 }
             }
@@ -165,19 +199,38 @@ namespace HelicopterAttack
                 GameControl.m_Current.m_TargetDestroyedCount = m_TotalKills;
             }
 
-            // Advance to next wave when all tanks in current wave are destroyed
-            if (m_KillsInCurrentWave >= m_TargetKillsForCurrentWave)
+            if (MainMenuUI.SelectedCampaignMode == 1)
             {
-                if (m_CurrentWave < m_TotalWaves)
+                // In Survival Mode: Infinite tank respawns
+                // Reactivate any inactive tank in scene to maintain endless wave
+                EnemyTank[] allTanks = FindObjectsOfType<EnemyTank>();
+                bool foundDisabled = false;
+                foreach (EnemyTank tank in allTanks)
                 {
-                    TriggerWave(m_CurrentWave + 1);
-                }
-                else
-                {
-                    m_IsMatchActive = false;
-                    if (GameControl.m_Current != null)
+                    if (tank != null && !tank.gameObject.activeSelf)
                     {
-                        GameControl.m_Current.HandleWin();
+                        tank.gameObject.SetActive(true);
+                        foundDisabled = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // Mode 0: Wave progression
+                if (m_KillsInCurrentWave >= m_TargetKillsForCurrentWave)
+                {
+                    if (m_CurrentWave < m_TotalWaves)
+                    {
+                        TriggerWave(m_CurrentWave + 1);
+                    }
+                    else
+                    {
+                        m_IsMatchActive = false;
+                        if (GameControl.m_Current != null)
+                        {
+                            GameControl.m_Current.HandleWin();
+                        }
                     }
                 }
             }
@@ -188,8 +241,7 @@ namespace HelicopterAttack
             if (!m_IsMatchActive || GameControl.m_Current == null || GameControl.m_Current.m_GameState != 0)
                 return;
 
-            // Draw 5-minute timer and Wave Kill Progress HUD at top center
-            float width = 340f;
+            float width = 380f;
             float height = 65f;
             float xPos = (Screen.width - width) * 0.5f;
             float yPos = 15f;
@@ -199,16 +251,27 @@ namespace HelicopterAttack
 
             int minutes = Mathf.FloorToInt(m_TimeRemaining / 60f);
             int seconds = Mathf.FloorToInt(m_TimeRemaining % 60f);
-            string timerText = string.Format("⏱ TIEMPO: {0:00}:{1:00}  |  OLEADA: {2}/{3}", minutes, seconds, m_CurrentWave, m_TotalWaves);
-            string killText = string.Format("🎯 OBJETIVO: {0} / {1} TANQUES ELIMINADOS", m_KillsInCurrentWave, m_TargetKillsForCurrentWave);
+
+            string timerText = "";
+            string killText = "";
+
+            if (MainMenuUI.SelectedCampaignMode == 1)
+            {
+                timerText = string.Format("⏱ TIEMPO: {0:00}:{1:00}  |  MODO: SUPERVIVENCIA", minutes, seconds);
+                killText = string.Format("🔥 TANQUES ELIMINADOS: {0}", m_TotalKills);
+            }
+            else
+            {
+                timerText = string.Format("⏱ TIEMPO: {0:00}:{1:00}  |  OLEADA: {2}/{3}", minutes, seconds, m_CurrentWave, m_TotalWaves);
+                killText = string.Format("🎯 OBJETIVO: {0} / {1} TANQUES ELIMINADOS", m_KillsInCurrentWave, m_TargetKillsForCurrentWave);
+            }
 
             GUI.Label(new Rect(xPos, yPos + 6, width, 22), timerText, m_TimerStyle);
             GUI.Label(new Rect(xPos, yPos + 32, width, 22), killText, m_TimerStyle);
 
-            // Draw Big Banner Announcement when new wave triggers
             if (m_WaveBannerTimer > 0f)
             {
-                float bannerW = 650f;
+                float bannerW = 680f;
                 float bannerH = 80f;
                 float bannerX = (Screen.width - bannerW) * 0.5f;
                 float bannerY = Screen.height * 0.22f;

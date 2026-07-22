@@ -92,22 +92,31 @@ namespace HelicopterAttack
             if (GameControl.m_Current != null && GameControl.m_Current.m_GameState != 1)
                 return;
 
-            float width = 450f;
-            float height = 250f;
+            float width = 480f;
+            float height = 270f;
             float x = (Screen.width - width) * 0.5f;
             float y = (Screen.height - height) * 0.5f;
 
             GUI.DrawTexture(new Rect(x, y, width, height), m_WinBgTexture);
             GUI.Box(new Rect(x, y, width, height), "");
 
-            GUI.Label(new Rect(x, y + 25, width, 45), "🏆 ¡MISIÓN CUMPLIDA!", m_TitleStyle);
+            if (MainMenuUI.SelectedCampaignMode == 1)
+            {
+                int kills = (WaveManager.Instance != null) ? WaveManager.Instance.m_TotalKills : 0;
+                GUI.Label(new Rect(x, y + 20, width, 35), "🔥 ¡SUPERVIVENCIA COMPLETADA!", m_TitleStyle);
+                GUI.Label(new Rect(x, y + 55, width, 30), "TANQUES ELIMINADOS EN 1 MINUTO: " + kills, m_ButtonStyle);
+            }
+            else
+            {
+                GUI.Label(new Rect(x, y + 25, width, 45), "🏆 ¡MISIÓN CUMPLIDA!", m_TitleStyle);
+            }
 
-            if (GUI.Button(new Rect(x + 50, y + 90, width - 100, 48), "▶ REINICIAR MISIÓN (ESPACIO)"))
+            if (GUI.Button(new Rect(x + 50, y + 105, width - 100, 48), "▶ JUGAR DE NUEVO (ESPACIO)"))
             {
                 Continue();
             }
 
-            if (GUI.Button(new Rect(x + 50, y + 155, width - 100, 48), "🏠 MENÚ PRINCIPAL"))
+            if (GUI.Button(new Rect(x + 50, y + 170, width - 100, 48), "🏠 MENÚ PRINCIPAL"))
             {
                 GoToMainMenu();
             }
