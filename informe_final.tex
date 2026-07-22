@@ -1,7 +1,7 @@
 \documentclass[12pt,a4paper]{article}
 
 % --- PAQUETES PRINCIPALES ---
-\usepackage[utf8]{utf8}
+\usepackage[utf8]{inputenc}
 \usepackage[spanish,es-tabla]{babel}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
@@ -18,15 +18,17 @@
 }
 \usepackage{booktabs}
 \usepackage{listings}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{fancyhdr}
 
-% --- CONFIGURACIÓN DE CÓDIGO FUENTE (C# / HLSL) ---
+% --- DEFINICIÓN DE COLORES ---
+\definecolor{azulUnsa}{HTML}{003366}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.96,0.96,0.96}
 
+% --- CONFIGURACIÓN DE CÓDIGO FUENTE (C# / HLSL) ---
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -57,36 +59,51 @@
 \begin{document}
 
 % ==============================================================================
-% PORTADA ACADÉMICA UNSA - EPIS
+% CARÁTULA OFICIAL UNSA (INDIVIDUAL)
 % ==============================================================================
 \begin{titlepage}
-    \centering
-    {\bfseries\Large UNIVERSIDAD NACIONAL DE SAN AGUSTÍN DE AREQUIPA \par}
-    \vspace{0.3cm}
-    {\bfseries\large FACULTAD DE INGENIERÍA DE PRODUCCIÓN Y SERVICIOS \par}
-    \vspace{0.2cm}
-    {\bfseries\large ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS \par}
-    \vspace{0.8cm}
-    
-    {\Large\bfseries INFORME FINAL DE PROYECTO \par}
-    \vspace{0.4cm}
-    {\huge\bfseries HELICOPTER ATTACK 3D \par}
-    \vspace{0.3cm}
-    {\small Videojuego de Combate Táctico con Visión Nocturna CCTV y Sistema de Oleadas en Unity \par}
-    
-    \vspace{1.5cm}
-    
-    \begin{flushleft}
-        \textbf{CURSO:} Computación Gráfica, Visión Computacional y Multimedia \\[0.2cm]
-        \textbf{DOCENTE:} Mag. Rene Alonso Nieto Valencia \\[0.2cm]
-        \textbf{ESTUDIANTE:} Kevin Joel Callo Ccagiavilca \\[0.2cm]
-        \textbf{REPOSITORIO GITHUB:} \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM.git}
-    \end{flushleft}
-    
-    \vfill
-    
-    {\large AREQUIPA -- PERÚ \par}
-    {\large 2026 \par}
+  \centering
+  \vspace*{0.5cm}
+
+  % Logo / Sigla UNSA
+  {\Huge\textcolor{azulUnsa}{\textbf{UNSA}}}\\[0.3cm]
+  \rule{\linewidth}{2pt}\\[0.3cm]
+
+  {\large\textbf{UNIVERSIDAD NACIONAL DE SAN AGUSTÍN DE AREQUIPA}}\\[0.2cm]
+  {\large Facultad de Producción y Servicios}\\[0.2cm]
+  {\large Escuela Profesional de Ingeniería de Sistemas}\\[0.8cm]
+
+  \rule{\linewidth}{0.5pt}\\[0.8cm]
+
+  {\LARGE\textbf{\textcolor{azulUnsa}{INFORME FINAL DE PROYECTO}}}\\[0.5cm]
+  {\huge\textbf{Helicopter Attack 3D\\[0.3cm]Videojuego de Combate Táctico en Unity}}\\[0.5cm]
+
+  \rule{\linewidth}{0.5pt}\\[0.8cm]
+
+  \begin{tabular}{ll}
+    \textbf{Curso:}        & Computación Gráfica, Visión Computacional y Multimedia \\[0.3cm]
+    \textbf{Docente:}      & Mag. Rene Alonso Nieto Valencia \\[0.3cm]
+    \textbf{Repositorio:}  & \texttt{KevinCallo/TrabajoFinalCGVCYM} \\[0.3cm]
+    \textbf{Semestre:}     & 2026-I \\[0.3cm]
+    \textbf{Fecha:}        & Julio 2026 \\
+  \end{tabular}
+
+  \vspace{1cm}
+  \rule{\linewidth}{0.5pt}\\[0.5cm]
+
+  {\large\textbf{Estudiante:}}\\[0.5cm]
+
+  \begin{tabular}{|l|l|}
+    \hline
+    \rowcolor{azulUnsa!20}
+    \textbf{N°} & \textbf{Apellidos y Nombres} \\
+    \hline
+    1 & Callo Ccagiavilca, Kevin Joel \\
+    \hline
+  \end{tabular}
+
+  \vfill
+  {\large Arequipa --- Perú\\2026}
 \end{titlepage}
 
 % ==============================================================================
@@ -118,7 +135,7 @@ A continuación se presentan los enlaces oficiales requeridos para la verificaci
     \item \textbf{Repositorio Oficial de Código Fuente (GitHub):} \\
     \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM.git}
     
-    \item \textbf{Aplicación Compilada Executable (.exe para Windows):} \\
+    \item \textbf{Aplicación Compilada Ejecutable (.exe para Windows):} \\
     \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM/raw/main/Helicoptero%20Attack.exe}
     
     \item \textbf{Video Demostrativo de Funcionamiento:} \\
