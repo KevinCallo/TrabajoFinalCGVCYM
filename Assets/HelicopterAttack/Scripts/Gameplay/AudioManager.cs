@@ -21,6 +21,12 @@ namespace HelicopterAttack
         [Range(0f, 1f)] public float m_MusicVolume = 0.85f;
         [Range(0f, 1f)] public float m_SfxVolume = 0.9f;
 
+        [Header("Music Trimming & Loop Range")]
+        [Tooltip("Start playback time in seconds (60s = 1 min 00s)")]
+        public float m_MusicStartTimeSeconds = 60.0f;
+        [Tooltip("End playback time in seconds (193s = 3 min 13s)")]
+        public float m_MusicEndTimeSeconds = 193.0f;
+
         private AudioSource m_MusicSource;
         private AudioSource m_HeliEngineSource;
         private AudioSource m_MachineGunSource;
@@ -93,11 +99,22 @@ namespace HelicopterAttack
         {
             UpdateVolumeFromPrefs();
 
-            // Guarantee Ambient Music is playing at all times
-            if (m_MusicSource != null && !m_MusicSource.isPlaying && m_MusicClip != null)
+            // Guarantee Ambient Music is playing in range 1:00 (60s) to 3:13 (193s)
+            if (m_MusicSource != null)
             {
-                m_MusicSource.clip = m_MusicClip;
-                m_MusicSource.Play();
+                if (!m_MusicSource.isPlaying && m_MusicClip != null)
+                {
+                    m_MusicSource.clip = m_MusicClip;
+                    m_MusicSource.time = m_MusicStartTimeSeconds;
+                    m_MusicSource.Play();
+                }
+                else if (m_MusicSource.isPlaying)
+                {
+                    if (m_MusicSource.time < m_MusicStartTimeSeconds || m_MusicSource.time >= m_MusicEndTimeSeconds)
+                    {
+                        m_MusicSource.time = m_MusicStartTimeSeconds;
+                    }
+                }
             }
 
             // Guarantee Helicopter Engine is playing during gameplay
@@ -176,10 +193,17 @@ namespace HelicopterAttack
         // 1. Ambient Background Music
         public void StartAmbientMusic()
         {
-            if (m_MusicSource != null && !m_MusicSource.isPlaying)
+            if (m_MusicSource != null)
             {
-                m_MusicSource.clip = m_MusicClip;
-                m_MusicSource.Play();
+                if (m_MusicSource.clip != m_MusicClip)
+                {
+                    m_MusicSource.clip = m_MusicClip;
+                }
+                if (!m_MusicSource.isPlaying)
+                {
+                    m_MusicSource.time = m_MusicStartTimeSeconds;
+                    m_MusicSource.Play();
+                }
             }
         }
 
