@@ -112,6 +112,11 @@ namespace HelicopterAttack
                 obj.transform.localScale = 2 * Vector3.one;
             }
 
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayTankExplosionSound();
+            }
+
             if (WaveManager.Instance != null)
             {
                 WaveManager.Instance.OnEnemyKilled();

@@ -1020,6 +1020,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: JoystickUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5623404315021513045, guid: feb33066d45903d4c9180136e445295f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6281052162538540305, guid: feb33066d45903d4c9180136e445295f,
         type: 3}
       propertyPath: m_RootOrder

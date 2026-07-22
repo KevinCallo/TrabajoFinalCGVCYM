@@ -30,6 +30,10 @@ namespace HelicopterAttack
             {
                 gameObject.AddComponent<WaveManager>();
             }
+            if (FindObjectOfType<AudioManager>() == null)
+            {
+                gameObject.AddComponent<AudioManager>();
+            }
         }
 
         // Update is called once per frame

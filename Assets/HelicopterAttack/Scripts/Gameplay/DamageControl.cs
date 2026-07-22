@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace HelicopterAttack
@@ -42,6 +42,11 @@ namespace HelicopterAttack
             {
                 Damage = 0;
                 IsDead = true;
+            }
+
+            if (PlayerHeli.Current != null && gameObject == PlayerHeli.Current.gameObject && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayHeliDamageSound();
             }
         }
 
