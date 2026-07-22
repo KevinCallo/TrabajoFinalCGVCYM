@@ -18,8 +18,8 @@ namespace HelicopterAttack
 
         [Header("Volume Controls")]
         [Range(0f, 1f)] public float m_MasterVolume = 1f;
-        [Range(0f, 1f)] public float m_MusicVolume = 0.5f;
-        [Range(0f, 1f)] public float m_SfxVolume = 0.8f;
+        [Range(0f, 1f)] public float m_MusicVolume = 0.85f;
+        [Range(0f, 1f)] public float m_SfxVolume = 0.9f;
 
         private AudioSource m_MusicSource;
         private AudioSource m_HeliEngineSource;
@@ -92,6 +92,20 @@ namespace HelicopterAttack
         void Update()
         {
             UpdateVolumeFromPrefs();
+
+            // Guarantee Ambient Music is playing at all times
+            if (m_MusicSource != null && !m_MusicSource.isPlaying && m_MusicClip != null)
+            {
+                m_MusicSource.clip = m_MusicClip;
+                m_MusicSource.Play();
+            }
+
+            // Guarantee Helicopter Engine is playing during gameplay
+            if (m_HeliEngineSource != null && !m_HeliEngineSource.isPlaying && m_HelicopterEngineClip != null && PlayerHeli.Current != null && PlayerHeli.Current.gameObject.activeInHierarchy)
+            {
+                m_HeliEngineSource.clip = m_HelicopterEngineClip;
+                m_HeliEngineSource.Play();
+            }
 
             // Only check shooting audio during gameplay when player is alive
             if (PlayerHeli.Current != null && PlayerHeli.Current.gameObject.activeInHierarchy && GameControl.m_Current != null && GameControl.m_Current.m_GameState == 0)
