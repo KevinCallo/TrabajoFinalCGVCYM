@@ -61,6 +61,9 @@ HelicopterAttack/
 * **GPU:** Compatible con DirectX 11.
 * **Entorno de Desarrollo:** Unity 2021 LTS o superior.
 
+### Ejecución Directa (Ejecutable Incluido)
+1. Puedes ejecutar directamente **`Helicoptero Attack.exe`** ubicado en la raíz de este repositorio para jugar al instante en Windows.
+
 ### Ejecución en Unity Editor
 1. Clona este repositorio:
    ```bash
