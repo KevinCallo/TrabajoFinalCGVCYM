@@ -1,0 +1,236 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- PAQUETES PRINCIPALES ---
+\usepackage[utf8]{utf8}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Informe Final - Helicopter Attack 3D},
+    pdfpagemode=FullScreen,
+}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+% --- CONFIGURACIÓN DE CÓDIGO FUENTE (C# / HLSL) ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% --- ENCABEZADOS Y PIES DE PÁGINA ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\footnotesize EPIS - UNSA | Computación Gráfica, Visión Computacional y Multimedia}
+\lhead{\footnotesize Helicopter Attack 3D}
+\rfoot{\thepage}
+
+\begin{document}
+
+% ==============================================================================
+% PORTADA ACADÉMICA UNSA - EPIS
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    {\bfseries\Large UNIVERSIDAD NACIONAL DE SAN AGUSTÍN DE AREQUIPA \par}
+    \vspace{0.3cm}
+    {\bfseries\large FACULTAD DE INGENIERÍA DE PRODUCCIÓN Y SERVICIOS \par}
+    \vspace{0.2cm}
+    {\bfseries\large ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS \par}
+    \vspace{0.8cm}
+    
+    {\Large\bfseries INFORME FINAL DE PROYECTO \par}
+    \vspace{0.4cm}
+    {\huge\bfseries HELICOPTER ATTACK 3D \par}
+    \vspace{0.3cm}
+    {\small Videojuego de Combate Táctico con Visión Nocturna CCTV y Sistema de Oleadas en Unity \par}
+    
+    \vspace{1.5cm}
+    
+    \begin{flushleft}
+        \textbf{CURSO:} Computación Gráfica, Visión Computacional y Multimedia \\[0.2cm]
+        \textbf{DOCENTE:} Mag. Rene Alonso Nieto Valencia \\[0.2cm]
+        \textbf{ESTUDIANTE:} Kevin Joel Callo Ccagiavilca \\[0.2cm]
+        \textbf{REPOSITORIO GITHUB:} \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM.git}
+    \end{flushleft}
+    
+    \vfill
+    
+    {\large AREQUIPA -- PERÚ \par}
+    {\large 2026 \par}
+\end{titlepage}
+
+% ==============================================================================
+% ÍNDICE GENERAL
+% ==============================================================================
+\newpage
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% 1. INTRODUCCIÓN Y DESCRIPCIÓN GENERAL DEL PROYECTO
+% ==============================================================================
+\section{Introducción y Descripción General del Proyecto}
+
+El presente informe documenta la arquitectura, diseño, implementación y resultados del proyecto \textbf{Helicopter Attack 3D}, desarrollado para la asignatura de \textit{Computación Gráfica, Visión Computacional y Multimedia} de la Escuela Profesional de Ingeniería de Sistemas de la Universidad Nacional de San Agustín de Arequipa (UNSA).
+
+El objetivo principal fue transformar y expandir un prototipo interactivo 3D en un videojuego completo para PC en el motor \textbf{Unity 3D}. El usuario pilotea un helicóptero de combate para defender una posición estratégica contra oleadas de tanques enemigos dotados de Inteligencia Artificial (IA). 
+
+El sistema integra física de combate aéreo-terrestre, ciclo ambiental acelerado de día y noche, renderizado de cámara de visión nocturna en escala de grises estilo circuito cerrado de televisión (CCTV) mediante un \textit{Shader HLSL} personalizado, y una campaña por oleadas temporizadas de 5 minutos.
+
+% ==============================================================================
+% 2. ENLACES DEL PROYECTO
+% ==============================================================================
+\section{Enlaces del Proyecto}
+
+A continuación se presentan los enlaces oficiales requeridos para la verificación y evaluación del proyecto:
+
+\begin{itemize}
+    \item \textbf{Repositorio Oficial de Código Fuente (GitHub):} \\
+    \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM.git}
+    
+    \item \textbf{Aplicación Compilada Executable (.exe para Windows):} \\
+    \url{https://github.com/KevinCallo/TrabajoFinalCGVCYM/raw/main/Helicoptero%20Attack.exe}
+    
+    \item \textbf{Video Demostrativo de Funcionamiento:} \\
+    \textbf{[AGREGAR LINK DEL VIDEO AQUÍ]} %(Ingresar el enlace de YouTube o Loom)
+\end{itemize}
+
+% ==============================================================================
+% 3. PROCESO DE DESARROLLO Y METODOLOGÍA
+% ==============================================================================
+\section{Proceso de Desarrollo de la Aplicación}
+
+El desarrollo se llevó a cabo en cuatro fases principales:
+
+\begin{enumerate}
+    \item \textbf{Análisis y Refactorización del Control de Entrada:} Se sustituyó el sistema de mandos táctiles móviles (\textit{Joysticks}) por un esquema de entrada unificado para PC (Teclado WASD, Elevación/Descenso con Espacio/Shift/Ctrl/Q/E y apuntado por ratón).
+    \item \textbf{Sistema de Interfaz y Menús:} Implementación del Menú Principal (\textit{MainMenuUI}) con 3 opciones de campaña, slider de volumen persistente en \texttt{PlayerPrefs} y Menú de Pausa (\textit{PauseUI}) que congela la simulación (\texttt{Time.timeScale = 0}).
+    \item \textbf{Visión Computacional y Shaders de Procesamiento Nocturno:} Desarrollo del componente \textit{NightCameraEffect} y del sombreador \textit{NightVisionShader.shader} en HLSL con compensación de sombras (\textit{Shadow Lifting}) y conmutación por tecla (\texttt{N} o \texttt{B}).
+    \item \textbf{Inteligencia Artificial y Sistema de Oleadas:} Programación del \textit{WaveManager} para organizar los tanques enemigos en 5 oleadas temporizadas con encaje al suelo por Raycast.
+\end{enumerate}
+
+% ==============================================================================
+% 4. TECNOLOGÍAS Y HERRAMIENTAS EMPLEADAS
+% ==============================================================================
+\section{Tecnologías y Herramientas Empleadas}
+
+\begin{itemize}
+    \item \textbf{Motor Gráfico:} Unity 3D Engine (C\# scripting).
+    \item \textbf{Lenguaje de Programación:} C\# (.NET Framework).
+    \item \textbf{Lenguaje de Sombreado:} Shader HLSL / CG de Unity (Procesamiento de imagen en espacio de pantalla).
+    \item \textbf{Motor de Físicas:} Unity Physics 3D (\texttt{Rigidbody}, \texttt{Physics.Raycast}).
+    \item \textbf{Control de Versiones:} Git \& GitHub.
+\end{itemize}
+
+% ==============================================================================
+% 5. FUNCIONALIDADES Y ARQUITECTURA DEL SISTEMA
+% ==============================================================================
+\section{Funcionalidades y Arquitectura de Código}
+
+\subsection{Mapeo de Componentes Principales}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{@{}llp{8cm}@{}}
+\toprule
+\textbf{Componente Script} & \textbf{Ubicación} & \textbf{Responsabilidad Principal} \\ \midrule
+\texttt{PlayerHeli.cs} & \texttt{Scripts/Gameplay/} & Control de vuelo del helicóptero, físicas, alternancia de cámara 1ª/3ª persona y disparo. \\
+\texttt{InputControl.cs} & \texttt{Scripts/Input/} & Captura de entradas de teclado y ratón con bloqueo de cursor. \\
+\texttt{EnemyTank.cs} & \texttt{Scripts/Gameplay/} & IA de persecución, orientación de torreta y disparo de cohetes. \\
+\texttt{WaveManager.cs} & \texttt{Scripts/Gameplay/} & Control del temporizador de 5 minutos y distribución de 5 oleadas. \\
+\texttt{DayNightCycle.cs} & \texttt{Scripts/Gameplay/} & Rotación solar continua y niebla ambiental. \\
+\texttt{NightCameraEffect.cs} & \texttt{Scripts/Gameplay/} & Conmutación por tecla \texttt{N}/\texttt{B} y renderizado de interfaz CCTV. \\
+\texttt{NightVisionShader.shader} & \texttt{Shaders/} & Shader HLSL en escala de grises con ganancia de brillo. \\ \bottomrule
+\end{tabular}
+\caption{Mapeo de scripts de la arquitectura del proyecto.}
+\end{table}
+
+\subsection{Esquema de Controles del Usuario}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Acción} & \textbf{Teclas} & \textbf{Descripción} \\ \midrule
+Movimiento Horizontal & \texttt{W}, \texttt{A}, \texttt{S}, \texttt{D} & Mover adelante, atrás y desplazamiento lateral. \\
+Elevación (Subir) & \texttt{Espacio} / \texttt{E} & Empuje vertical ascendente. \\
+Descenso (Bajar) & \texttt{Shift Izq} / \texttt{Ctrl Izq} / \texttt{Q} & Empuje vertical descendente. \\
+Apuntado & Movimiento del Ratón & Control de cámara y dirección de tiro. \\
+Ametralladora & Clic Izquierdo del Ratón & Disparo de ráfaga rápida. \\
+Lanzacohetes & Clic Derecho del Ratón & Disparo de misiles alternados. \\
+Cámara 1ª/3ª Persona & \texttt{V} / \texttt{C} / \texttt{Tab} & Alterna vista de cabina o vista exterior. \\
+Visión Nocturna & \texttt{N} / \texttt{B} & Activa/desactiva modo CCTV en escala de grises. \\
+Menú de Pausa & \texttt{Escape} / \texttt{P} & Congela la partida y abre opciones. \\ \bottomrule
+\end{tabular}
+\caption{Esquema unificado de controles del videojuego.}
+\end{table}
+
+% ==============================================================================
+% 6. DESAFÍOS TÉCNICOS Y SOLUCIONES IMPLEMENTADAS
+% ==============================================================================
+\section{Desafíos Técnicos y Soluciones Implementadas}
+
+\subsection{Corrección de Autodaño al Disparar}
+\textbf{Problema:} Al instanciar las balas y cohetes desde el helicóptero, los proyectiles colisionaban inmediatamente contra el colisionador del propio jugador. \\
+\textbf{Solución:} Se asignó la propiedad \texttt{proj.Creator = gameObject;} en \texttt{PlayerHeli.cs} y se agregó una verificación de exclusión de daño en \texttt{Projectile\_Base.cs}.
+
+\subsection{Ajuste del Suelo mediante Raycast}
+\textbf{Problema:} Los tanques enemigos en algunas áreas del mapa quedaban suspendidos en el aire. \\
+\textbf{Solución:} En \texttt{WaveManager.cs} se implementó la función \texttt{Physics.Raycast(pos + Vector3.up * 50f, Vector3.down, out RaycastHit hit)} para ajustar la posición \texttt{Y} exactamente sobre la superficie del terreno (\texttt{hit.point.y + 0.1f}).
+
+\subsection{Filtro de Visión Nocturna CCTV}
+\textbf{Problema:} Al caer la noche la escena quedaba excesivamente oscura. \\
+\textbf{Solución:} Se desarrolló el sombreador \texttt{NightVisionShader.shader} con una función de compensación de sombras:
+\begin{lstlisting}[language=C]
+float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
+gray = pow(max(0.001, gray), 0.48) * _Brightness;
+gray = saturate((gray - 0.35) * _Contrast + 0.35 + 0.12);
+\end{lstlisting}
+
+% ==============================================================================
+% 7. LECCIONES APRENDIDAS Y CONCLUSIONES
+% ==============================================================================
+\section{Lecciones Aprendidas}
+
+\begin{enumerate}
+    \item \textbf{Procesamiento de Imagen en Espacio de Pantalla:} La implementación de Shaders para efectos de post-procesamiento (como visión nocturna CCTV) resulta una alternativa altamente eficiente frente al uso de luces en tiempo real.
+    \item \textbf{Gestión Eficiente de Recursos en Unity:} Reutilizar y activar/desactivar tanques pre-colocados mediante el \texttt{WaveManager} garantiza una tasa estable de cuadros por segundo (FPS).
+\end{enumerate}
+
+\section{Conclusiones}
+
+El proyecto \textbf{Helicopter Attack 3D} fue desarrollado exitosamente cumpliendo con los estándares académicos de la Escuela Profesional de Ingeniería de Sistemas de la Universidad Nacional de San Agustín de Arequipa (UNSA). La aplicación demuestra la integración efectiva de gráficos por computadora, visión computacional aplicada y sistemas multimedia interactivos.
+
+\end{document}
